@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lakshmi Shopping Mall Receipt</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    min-height:100vh;
+    padding:30px;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    background:rgba(255,255,255,0.15);
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.4);
+    backdrop-filter:blur(10px);
+}
+
+h1{
+    text-align:center;
+    color:white;
+    margin-bottom:20px;
+}
+
+.mall-title{
+    text-align:center;
+    color:#00ffcc;
+    margin-bottom:20px;
+    font-size:28px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:5px;
+    font-size:16px;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    outline:none;
+}
+
+input::placeholder{
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#0077b6;
+    color:white;
+    border:none;
+    border-radius:5px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#023e8a;
+}
+
+.receipt{
+    margin-top:25px;
+    border-top:2px dashed white;
+    padding-top:20px;
+    color:white;
+}
+
+.receipt h2{
+    text-align:center;
+    margin-bottom:15px;
+    color:#00ffcc;
+}
+
+.receipt p{
+    margin-bottom:10px;
+    font-size:16px;
+}
+
+.total{
+    color:#00ff99;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#ddd;
+}
+
+.print-btn{
+    margin-top:15px;
+    background:green;
+}
+
+.print-btn:hover{
+    background:darkgreen;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="mall-title">
+    Lakshmi Shopping Mall
+</div>
+
+<h1>Billing Receipt Generator</h1>
+
+<input type="text" id="customer" placeholder="Customer Name">
+
+<input type="text" id="mobile" placeholder="Mobile Number">
+
+<input type="text" id="product" placeholder="Product Name">
+
+<input type="number" id="quantity" placeholder="Quantity">
+
+<input type="number" id="price" placeholder="Price Per Item">
+
+<input type="number" id="discount" placeholder="Discount %">
+
+<input type="number" id="gst" placeholder="GST %">
+
+<button onclick="generateReceipt()">
+Generate Receipt
+</button>
+
+<div class="receipt" id="receiptBox"></div>
+
+<button class="print-btn" onclick="window.print()">
+Print Receipt
+</button>
+
+</div>
+
+<script>
+
+function generateReceipt(){
+
+    let customer =
+    document.getElementById("customer").value;
+
+    let mobile =
+    document.getElementById("mobile").value;
+
+    let product =
+    document.getElementById("product").value;
+
+    let quantity =
+    parseFloat(document.getElementById("quantity").value);
+
+    let price =
+    parseFloat(document.getElementById("price").value);
+
+    let discount =
+    parseFloat(document.getElementById("discount").value);
+
+    let gst =
+    parseFloat(document.getElementById("gst").value);
+
+    if(isNaN(quantity) || isNaN(price)){
+        alert("Please enter valid quantity and price");
+        return;
+    }
+
+    if(isNaN(discount)){
+        discount = 0;
+    }
+
+    if(isNaN(gst)){
+        gst = 0;
+    }
+
+    let subtotal = quantity * price;
+
+    let discountAmount = subtotal * discount / 100;
+
+    let afterDiscount = subtotal - discountAmount;
+
+    let gstAmount = afterDiscount * gst / 100;
+
+    let total = afterDiscount + gstAmount;
+
+    let today = new Date();
+
+    let receiptNumber =
+    Math.floor(Math.random() * 100000);
+
+    document.getElementById("receiptBox").innerHTML = `
+
+    <h2>Lakshmi Shopping Mall</h2>
+
+    <p><strong>Receipt No:</strong>
+    ${receiptNumber}</p>
+
+    <p><strong>Date:</strong>
+    ${today.toLocaleDateString()}</p>
+
+    <hr>
+
+    <p><strong>Customer Name:</strong>
+    ${customer}</p>
+
+    <p><strong>Mobile Number:</strong>
+    ${mobile}</p>
+
+    <hr>
+
+    <p><strong>Product:</strong>
+    ${product}</p>
+
+    <p><strong>Quantity:</strong>
+    ${quantity}</p>
+
+    <p><strong>Price Per Item:</strong>
+    ₹${price}</p>
+
+    <p><strong>Subtotal:</strong>
+    ₹${subtotal.toFixed(2)}</p>
+
+    <p><strong>Discount (${discount}%):</strong>
+    - ₹${discountAmount.toFixed(2)}</p>
+
+    <p><strong>GST (${gst}%):</strong>
+    ₹${gstAmount.toFixed(2)}</p>
+
+    <p class="total">
+    Total Amount: ₹${total.toFixed(2)}
+    </p>
+
+    <hr>
+
+    <div class="footer">
+        <p>Thank You For Shopping With Us!</p>
+        <p>Visit Again ❤️</p>
+    </div>
+
+    `;
+
+}
+
+</script>
+
+</body>
+</html>
